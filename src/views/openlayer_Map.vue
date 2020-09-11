@@ -1,6 +1,8 @@
 <template>
   <div id="openlayerContainer" class="openlayerContainer">
-    <div id="openlayer"></div>
+    <div id="openlayer">
+      
+    </div>
   </div>
 </template>
 <style scoped>
@@ -28,11 +30,10 @@ export default {
   },
   methods: {
     initMap() {
-      const googleImageUrl =
-        "http://localhost:8080/smartgis.service1/image/geoqblue?x={x}&y={y}&z={z}";
+      const googleImageUrl = "http://localhost:8080/smartgis.service1/image/geoqblue?x={x}&y={y}&z={z}";
       let map = new Map({
         target: "openlayer",
-        llayers: [
+        layers: [
           new TileLayer({
             source: new OSM()
           })
@@ -40,7 +41,7 @@ export default {
         view: new View({
           projection: "EPSG:4326", //使用这个坐标系
           center: [114.064839, 22.548857], //深圳
-          zoom: 12
+          zoom: 5
         })
       });
     }

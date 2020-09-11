@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './main.css'
-
+console.log(App)
 
 Vue.config.productionTip = false
 

@@ -10,7 +10,6 @@
     </div>
   </div>
 </template>
-
 <style scoped>
 #mapContainer {
   width: 100%;
