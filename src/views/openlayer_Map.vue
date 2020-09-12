@@ -20,6 +20,7 @@ import "ol/ol.css";
 import { Map, View } from "ol";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
+import XYZ from 'ol/source/XYZ'
 export default {
   name: "openlayer",
   data() {
@@ -35,6 +36,9 @@ export default {
         target: "openlayer",
         layers: [
           new TileLayer({
+            // source: new XYZ({
+            //   url:googleImageUrl
+            // })
             source: new OSM()
           })
         ],
