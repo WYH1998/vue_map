@@ -3,11 +3,11 @@
     <split-pane split="vertical" @resize="resize">
       <template slot="paneL">
         <!-- 二维 -->
-        <openlayer-map></openlayer-map>
+        <openlayer-map ref="openlayer"></openlayer-map>
       </template>
       <template slot="paneR">
         <!-- 三维 -->
-        <cesium-map></cesium-map>
+        <cesium-map ref="cesium"></cesium-map>
       </template>
     </split-pane>
   </div>
@@ -29,7 +29,11 @@ export default {
   },
   mounted() {},
   methods: {
-    resize() {},
+    resize() {
+      this.$nextTick(_=>{
+        this.$refs['openlayer'].resize();
+      })
+    }
   },
 };
 </script>

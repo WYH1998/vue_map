@@ -12,7 +12,9 @@ import OSM from "ol/source/OSM";
 export default {
   name: "openlayer",
   data() {
-    return {};
+    return {
+      map:'',
+    };
   },
   mounted() {
     this.initMap();
@@ -20,28 +22,27 @@ export default {
   methods: {
     initMap() {
       const googleImageUrl =
-        "http://localhost:8888/smartgis.service1/image/geoqblue?x={x}&y={y}&z={z}";
+        "http://localhost:7890/smartgis.service/image?source=geoBlue&z={z}&x={x}&y={y}";
       let map = new Map({
         target: "openlayer",
         layers: [
           new TileLayer({
             source: new XYZ({
               url:googleImageUrl,
-              params:{
-                VERSION:'1.1.1',
-                FORMAT:'image/png'
-              }
             }),
-            //  source: new OSM()
           }),
         ],
         view: new View({
           projection: "EPSG:4326", //使用这个坐标系
-          // center: [114.064839, 22.548857], //深圳
-          // zoom: 2,
+          center: [114, 32], //深圳
+          zoom: 4,
         }),
       });
+      this.map = map;
     },
+    resize(){
+      this.map.updateSize();
+    }
   },
 };
 </script>
