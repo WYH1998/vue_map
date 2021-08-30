@@ -6,20 +6,43 @@
 <style scoped>
 </style>
 <script>
-// import "cesium/Build/CesiumUnminified/Widgets/widgets.css";
-// import 'cesium/Cesium'
 export default {
   data() {
-    return {};
+    return {
+      viewer: {},
+    };
   },
   mounted() {
     this.initMap();
   },
   methods: {
     initMap() {
-      debugger;
-      let viewer = new Cesium.Viewer("cesium");
+      let viewer = new Cesium.Viewer("cesium", {
+        animation: false,
+        fullscreenButton: false,
+        vrButton: false,
+        geocoder: false,
+        selectionIndicator: false,
+        timeline: false,
+        infoBox: false,
+      });
+      viewer.cesiumWidget._creditContainer.style.display = "none";
+      viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+        Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
+      );
+      // viewer.scene.screenSpaceCameraController.maximumZoomDistance = 40489014.0;
+      viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
     },
   },
 };
 </script>
+<style scoped>
+#cesiumContainer {
+  height: 100%;
+  width: 100%;
+}
+#cesium {
+  height: 100%;
+  width: 100%;
+}
+</style> 

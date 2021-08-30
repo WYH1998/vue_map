@@ -15,7 +15,7 @@ const routes = [{
   },
   {
     path: '/openlayers',
-    name: '三维',
+    name: '二维',
     component: () => import('@/views/openlayer_Map.vue')
   }
 ]

@@ -1,57 +1,92 @@
-// // cesium webpack 配置
-// // https://cesiumjs.org/tutorials/cesium-and-webpack/
-// const webpack = require('webpack');
-// const path = require('path');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
+/**
+ * @Author: Caven
+ * @Date: 2018-12-15 00:33:19
+ */
 
-// // The path to the Cesium source code
-// const cesiumSource = 'node_modules/cesium/Source';
-// const cesiumWorkers = '../Build/Cesium/Workers';
-
-// module.exports = {
-//   output: {
-//     // Needed to compile multiline strings in Cesium
-//     sourcePrefix: '',
-//   },
-//   amd: {
-//     // Enable webpack-friendly use of require in Cesium
-//     toUrlUndefined: true,
-//   },
-//   node: {
-//     // Resolve node module use of fs
-//     fs: 'empty',
-//   },
-//   resolve: {
-//     alias: {
-//       // Cesium module name
-//       cesium: path.resolve(cesiumSource),
-//     },
-//   },
-//   module: {
-//     // 解决：Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
-//     unknownContextCritical: false,
-//   },
-//   plugins: [
-//     // Copy Cesium Assets, Widgets, and Workers to a static directory
-//     new CopyWebpackPlugin([
-//       { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' },
-//     ]),
-//     new CopyWebpackPlugin([
-//       { from: path.join(cesiumSource, 'Assets'), to: 'Assets' },
-//     ]),
-//     new CopyWebpackPlugin([
-//       { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' },
-//     ]),
-//     // 解决：Unable to determine Cesium base URL automatically,…efining a global variable called CESIUM_BASE_URL.
-//     new webpack.DefinePlugin({
-//       // Define relative base path in cesium for loading assets
-//       CESIUM_BASE_URL: JSON.stringify(''),
-//     }),
-//   ],
-// };
-
-module.exports = {
-    devServer:{
-        port:8888
-    }
-}
+ 'use strict'
+ const path = require('path')
+ const cesiumBuild = './node_modules/cesium/Build/Cesium'
+ const webpack = require('webpack')
+ const CopyWebpackPlugin = require('copy-webpack-plugin')
+ 
+ let resolve = dir => {
+   return path.resolve(__dirname, dir)
+ }
+ 
+ module.exports = {
+   publicPath: process.env.NODE_ENV === 'production' ? '/dist/' : '/',
+   productionSourceMap: false,
+   configureWebpack: {
+     module: {
+       unknownContextCritical: false
+     },
+     performance: {
+       hints: false
+     }
+   },
+   chainWebpack: config => {
+     config.resolve.extensions
+       .add('.js')
+       .add('.vue')
+       .end()
+       .alias.set('cesium', path.resolve(__dirname, cesiumBuild))
+       .end()
+     config.module
+       .rule('images')
+       .test(/\.(png|jpe?g|gif)(\?.*)?$/)
+       .use('url-loader')
+       .loader('url-loader')
+       .options({
+         name: 'images/[name].[ext]',
+         limit: 10000
+       })
+       .end()
+ 
+     config.module
+       .rule('fonts')
+       .test(/\.(eot|ttf|woff|woff2)(\?.*)?$/)
+       .use('url-loader')
+       .loader('url-loader')
+       .options({
+         name: 'fonts/[name].[ext]',
+         limit: 10000
+       })
+       .end()
+ 
+     config.module
+       .rule('svg')
+       .exclude.add(resolve('src/assets/svg/icons'))
+       .end()
+ 
+     config.module
+       .rule('icons')
+       .test(/\.svg$/)
+       .include.add(resolve('src/assets/svg/icons'))
+       .end()
+       .use('svg-sprite-loader')
+       .loader('svg-sprite-loader')
+       .options({
+         symbolId: 'icon-[name]'
+       })
+       .end()
+ 
+     config.plugin('copy').use(CopyWebpackPlugin, [
+       [
+         { from: path.join(cesiumBuild, 'Workers'), to: 'resources/Workers' },
+         { from: path.join(cesiumBuild, 'Assets'), to: 'resources/Assets' },
+         { from: path.join(cesiumBuild, 'Widgets'), to: 'resources/Widgets' },
+         {
+           from: path.join(cesiumBuild, 'ThirdParty'),
+           to: 'resources/ThirdParty'
+         }
+       ]
+     ])
+ 
+     config
+       .plugin('define')
+       .use(webpack.DefinePlugin, [
+         { CESIUM_BASE_URL: JSON.stringify('resources/') }
+       ])
+   }
+ }
+ 
