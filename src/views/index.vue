@@ -15,8 +15,8 @@
 
 <script>
 import splitPane from "vue-splitpane";
-import cesiumMap from "./cesium_Map";
-import openlayerMap from "./openlayer_Map";
+import cesiumMap from "@/views/Cesium/cesium";
+import openlayerMap from "@/views/openlayer/openlayer";
 export default {
   name: "mainMap",
   data() {

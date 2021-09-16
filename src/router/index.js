@@ -6,17 +6,17 @@ Vue.use(VueRouter)
 const routes = [{
     path: '/',
     name: '主页面',
-    component: () => import('@/views/index.vue')
+    component: () => import('@/views/index')
   },
   {
     path: '/cesium',
     name: '三维',
-    component: () => import('@/views/cesium_Map.vue')
+    component: () => import('@/views/Cesium/cesium')
   },
   {
     path: '/openlayers',
     name: '二维',
-    component: () => import('@/views/openlayer_Map.vue')
+    component: () => import('@/views/openlayer/openlayer')
   }
 ]
 

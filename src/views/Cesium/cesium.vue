@@ -28,9 +28,9 @@ export default {
         selectionIndicator: false, //选中元素显示,默认true
         timeline: false, //时间线,默认true
         infoBox: false, //点击要素之后显示的信息,默认true
-        navigationHelpButton:false,
-        baseLayerPicker:false,
-        scene3DOnly:true,
+        navigationHelpButton:false,// 导航帮助说明
+        baseLayerPicker:false,// 地图切换空间
+        scene3DOnly:true,// 只显示3D场景
         imageryProvider: new Cesium.UrlTemplateImageryProvider({
           url: googleImageUrl,
         }),
